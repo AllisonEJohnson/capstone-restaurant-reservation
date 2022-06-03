@@ -3,8 +3,6 @@ import React, {useState} from "react";
 
 function ListReservations({reservations, date}){
 
-const filteredReservations = reservations.filter((reservation) => reservation.reservation_date === date
-)
 
 const displayReservations = reservations.map((reservation, index) => {
 

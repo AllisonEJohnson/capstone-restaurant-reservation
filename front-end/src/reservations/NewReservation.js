@@ -32,6 +32,7 @@ function NewReservation(){
         const abortController = new AbortController;
         const response = await createReservation(formData, abortController.signal)
         history.push(`/dashboard/?date=${response.reservation_date.slice(0,10)}`)
+        console.log(response.reservation_date)
         console.log("submitted");
 
     }

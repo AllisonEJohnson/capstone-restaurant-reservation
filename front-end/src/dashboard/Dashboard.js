@@ -20,6 +20,7 @@ function Dashboard() {
   //If date is not given, should preform get request with today's date.
   let date = today();
   const query = useQuery().get('date');
+  console.log("query", query);
   if(query){
     date = query;
   }
@@ -29,11 +30,10 @@ function Dashboard() {
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
-    const view_date = date;
     const abortController = new AbortController();
     setReservationsError(null);
-    console.log(date);
-    listByDate( date, abortController.signal)
+    console.log("date", {date});
+    listReservations( {date}, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
     return () => abortController.abort();

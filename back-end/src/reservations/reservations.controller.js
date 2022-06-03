@@ -1,6 +1,7 @@
 const service = require("./reservations.server");
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
 
+
 ///validation functions
 
 const VALID_PROPERTIES = [
@@ -60,18 +61,60 @@ const hasRequiredProperties = hasProperties(
   'people'
 )
 
+function dateIsValid (req, res, next) {
+  const { reservation_date } = req.body.data
+  const isDate = Date.parse(reservation_date)
 
+  if (!Number.isNaN(isDate)) {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `reservation_date is not a valid date.`
+  })
+}
+
+function timeIsValid (req, res, next) {
+  const { reservation_time } = req.body.data
+  const isTime = reservation_time.match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
+  if (isTime) {
+    return next()
+  } else {
+    next({
+      status: 400,
+      message: `reservation_time is not a valid time.`
+    })
+  }
+}
+
+function peopleIsNumber (req, res, next) {
+  let { people } = req.body.data
+  if (typeof people !== 'number' || people < 0) {
+    next({
+      status: 400,
+      message: `people must be a number and greater than zero.`
+    })
+  } else {
+    return next()
+  }
+}
 
 
 //CRUDL functions
 async function list(req, res) {
+  console.log("req.query", req.query)
   const {date} = req.query;
+  let data;
+  console.log("date", date);
   if (date) {
     data = await service.listByDate(date);
+    console.log("data listbyDate", data)
+
   } else {
     data = await service.list();
+    console.log("data list", data)
   }
-  res.json({data});
+  res.status(200).json({data});
 }
 
 async function create (req, res, next) {
@@ -82,5 +125,5 @@ async function create (req, res, next) {
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  create: [hasOnlyValidProperties, hasRequiredProperties, asyncErrorBoundary(create)]
+  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, asyncErrorBoundary(create)]
 };
