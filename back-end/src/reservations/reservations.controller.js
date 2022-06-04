@@ -130,6 +130,18 @@ function notOnTuesday (req, res, next) {
   }
 }
 
+function resDuringOpHrs(req, res, next){
+  const { reservation_time } = res.locals;
+  if(reservation_time < '10:30:00' || reservation_time > '21:30:00'){
+    return next({
+      status: 400,
+      message: 'Reservations can only be made between 10:30 am and 9:30 pm'
+    })
+  } else {
+    return next();
+  }
+}
+
 
 
 //CRUDL functions
@@ -153,5 +165,5 @@ async function create (req, res, next) {
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, asyncErrorBoundary(create)]
+  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, asyncErrorBoundary(create)]
 };
