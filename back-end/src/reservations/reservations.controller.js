@@ -66,6 +66,7 @@ function dateIsValid (req, res, next) {
   const isDate = Date.parse(reservation_date)
 
   if (!Number.isNaN(isDate)) {
+    res.locals.reservation_date = reservation_date;
     return next()
   }
   next({
@@ -78,6 +79,7 @@ function timeIsValid (req, res, next) {
   const { reservation_time } = req.body.data
   const isTime = reservation_time.match(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
   if (isTime) {
+    res.locals.reservation_time = reservation_time;
     return next()
   } else {
     next({
@@ -95,24 +97,50 @@ function peopleIsNumber (req, res, next) {
       message: `people must be a number and greater than zero.`
     })
   } else {
+    res.locals.people = people;
     return next()
   }
 }
 
+function notInPast (req, res, next) {
+  const { reservation_date, reservation_time } = res.locals;
+  console.log(reservation_date, reservation_time);
+  let now = Date.now()
+  let bookedTime = Date.parse(`${reservation_date} ${reservation_time} EST`)
+  if (bookedTime > now) {
+    return next()
+  } else {
+    return next({
+      status: 400,
+      message: 'Reservations must be made in the future.'
+    })
+  }
+}
+
+function notOnTuesday (req, res, next) {
+  const { reservation_date, reservation_time } = res.locals;
+  let day = new Date(`${reservation_date} ${reservation_time}`)
+  if (day.getDay() !== 2) {
+    next()
+  } else {
+    return next({
+      status: 400,
+      message: 'Restaurant is closed on Tuesdays, please select another day.'
+    })
+  }
+}
+
+
 
 //CRUDL functions
 async function list(req, res) {
-  console.log("req.query", req.query)
   const {date} = req.query;
   let data;
-  console.log("date", date);
   if (date) {
     data = await service.listByDate(date);
-    console.log("data listbyDate", data)
 
   } else {
     data = await service.list();
-    console.log("data list", data)
   }
   res.status(200).json({data});
 }
@@ -125,5 +153,5 @@ async function create (req, res, next) {
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, asyncErrorBoundary(create)]
+  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, asyncErrorBoundary(create)]
 };

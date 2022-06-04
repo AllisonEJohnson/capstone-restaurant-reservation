@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listByDate } from "../utils/api";
+import { listReservations } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
 import useQuery from '../utils/useQuery';
@@ -20,7 +20,6 @@ function Dashboard() {
   //If date is not given, should preform get request with today's date.
   let date = today();
   const query = useQuery().get('date');
-  console.log("query", query);
   if(query){
     date = query;
   }
@@ -32,7 +31,6 @@ function Dashboard() {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    console.log("date", {date});
     listReservations( {date}, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
