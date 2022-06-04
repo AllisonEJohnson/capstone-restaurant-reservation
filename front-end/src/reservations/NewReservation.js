@@ -18,6 +18,7 @@ function NewReservation(){
         status: "booked"
     }
     const [formData, setFormData] = useState({...initialFormState});
+    const [errorAlert, setErrorAlert] = useState(false);
 
      //Handlers
      const changeHandler = ({ target }) => {
@@ -30,9 +31,12 @@ function NewReservation(){
       const submitHandler = async (event) => {
         event.preventDefault();
         const abortController = new AbortController;
+        try {
         const response = await createReservation(formData, abortController.signal)
         history.push(`/dashboard/?date=${response.reservation_date.slice(0,10)}`)
-
+        } catch(error){
+            setErrorAlert(error);
+        }
 
     }
     return(
@@ -41,6 +45,7 @@ function NewReservation(){
                 <h1>New Reservation</h1>
             </div>
             <div>
+                <ErrorAlert error={errorAlert} />
                 <ReservationForm formData={formData} changeHandler={changeHandler} submitHandler={submitHandler}/>
             </div>
         </div>
