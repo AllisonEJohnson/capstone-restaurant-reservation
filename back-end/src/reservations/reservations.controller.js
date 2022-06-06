@@ -142,6 +142,21 @@ function resDuringOpHrs(req, res, next){
   }
 }
 
+async function reservationExists (req, res, next) {
+  const { reservationId } = req.params
+  const reservation = await service.read(reservationId)
+  if (reservation) {
+    res.locals.reservation = reservation
+    return next()
+  }
+  next({
+    status: 404,
+    message: `Resevation id ${reservationId} cannot be found.`
+  })
+}
+
+
+
 
 
 //CRUDL functions
@@ -163,7 +178,23 @@ async function create (req, res, next) {
   res.status(201).json({data})
 }
 
+async function read (req, res) {
+  const { reservation: data } = res.locals
+  res.json({ data })
+}
+
+async function update (req, res) {
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id
+  }
+  const data = await service.update(updatedReservation)
+  res.status(200).json({ data })
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, asyncErrorBoundary(create)]
+  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, asyncErrorBoundary(create)],
+  read: [reservationExists, asyncErrorBoundary(read)],
+  update: [reservationExists, asyncErrorBoundary(update)]
 };

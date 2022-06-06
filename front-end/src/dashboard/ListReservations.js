@@ -8,13 +8,25 @@ const displayReservations = reservations.map((reservation, index) => {
 
     return(
             <tr key ={index}>
-                <th scope ="row">{reservation.reservation_id}</th>
-                <th>{reservation.first_name}</th>
-                <th>{reservation.last_name}</th>
-                <th>{reservation.mobile_number}</th>
-                <th>{reservation.reservation_date}</th>
-                <th>{reservation.reservation_time}</th>
-                <th>{reservation.people}</th>
+                <td scope ="row">{reservation.reservation_id}</td>
+                <td>{reservation.first_name}</td>
+                <td>{reservation.last_name}</td>
+                <td>{reservation.mobile_number}</td>
+                <td>{reservation.reservation_date}</td>
+                <td>{reservation.reservation_time}</td>
+                <td>{reservation.people}</td>
+                <td>{reservation.status !== "booked"? null : (
+                <>
+                  <a
+                    href={`/reservations/${reservation.reservation_id}/seat`}
+                    className="btn btn-outline-primary mx-1"
+                  >
+                    Seat
+                  </a>
+                </> 
+                )}
+            </td>
+
             </tr>
 
 
