@@ -16,16 +16,24 @@ function NewTable(){
     const [errorAlert, setErrorAlert] = useState(false);
 
      //Handlers
-     const changeHandler = ({ target }) => {
+     const changeHandlerName = ({ target }) => {
         setFormData((currentFormData) => ({
           ...currentFormData,
           [target.name]: target.value,
         }));
-      };   
+    }
+
+    const changeHandlerCapacity = ({ target }) => {
+        setFormData((currentFormData) => ({
+          ...currentFormData,
+          [target.name]: Number(target.value),
+        }));
+    }
     
       const submitHandler = async (event) => {
         event.preventDefault();
         const abortController = new AbortController;
+        console.log("formdata", formData)
         try {
         const response = await createTable(formData, abortController.signal)
         history.push(`/dashboard`)
@@ -41,7 +49,7 @@ function NewTable(){
             </div>
             <div>
                 <ErrorAlert error={errorAlert} />
-                <TableForm formData={formData} changeHandler={changeHandler} submitHandler={submitHandler}/>
+                <TableForm formData={formData} changeHandlerName={changeHandlerName} changeHandlerCapacity={changeHandlerCapacity} submitHandler={submitHandler}/>
             </div>
         </div>
     )
