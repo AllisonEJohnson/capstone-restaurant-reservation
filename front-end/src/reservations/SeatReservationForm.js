@@ -20,8 +20,8 @@ function SeatReservationForm({tables, submitHandler, changeHandler}){
                      ))}
                 </select>
                 <div>
-                    <button className='btn btn-primary' type='submit' onClick={(event) => submitHandler(event)}>Submit:</button>
-                    <button className='btn btn-secondary' type='button' onClick={()=>history.goBack()}>Cancel:</button>
+                    <button className='btn btn-primary' type='submit' onClick={(event) => submitHandler(event)}>Submit</button>
+                    <button className='btn btn-secondary' type='button' onClick={()=>history.goBack()}>Cancel</button>
                 </div>
             </form>
         </div>

@@ -28,9 +28,7 @@ function SeatReservation(){
         event.preventDefault();
         try{
 
-            console.log("reservation id", reservation_id);
             const tableData = JSON.parse(formData)
-            console.log("formData tableId", tableData.table_id);
             const response = await updateTableForSeating(tableData.table_id, reservation_id)
             response.status = "Occupied";
             history.push("/dashboard")

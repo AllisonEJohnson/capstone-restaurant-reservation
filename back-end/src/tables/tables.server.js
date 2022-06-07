@@ -35,6 +35,16 @@ function readReservation(reservation_id){
         .then((selectedResults) => selectedResults[0])
  }
 
+ function destroy(table_id){
+     return knex("tables").where({table_id}).del();
+ }
+
+ function deleteSeatAssignment(table_id){
+     return knex("tables")
+        .select("*")
+        .where({table_id})
+        .update({"reservation_id": null})
+ }
 
 
 
@@ -43,5 +53,7 @@ module.exports = {
     list,
     update,
     read,
-    readReservation
+    readReservation,
+    destroy,
+    deleteSeatAssignment
 };

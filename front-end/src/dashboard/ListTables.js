@@ -1,4 +1,4 @@
-function ListTables({tables}){
+function ListTables({tables, finishHandler}){
 
     const displayTables = tables.map((table, index) => {
         if(table.occupied || table.reservation_id){
@@ -9,6 +9,8 @@ function ListTables({tables}){
                     <td>{table.capacity}</td>
                     <td>{table.reservation_id}</td>
                     <td><p data-table-id-status={table.table_id}>Occupied</p></td>
+                    <td><button data-table-id-finish={table.table_id} className='button' type='' 
+                    onClick={() => finishHandler(table.table_id)}>Finish</button></td>
                 </tr>
             )
         } else {

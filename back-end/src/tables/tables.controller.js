@@ -125,6 +125,17 @@ function hasProperties(...properties) {
       return next();
     }
 
+    async function tableIsOccupied (req, res, next){
+      const {reservation_id} = res.locals.table;
+      if(!reservation_id){
+        return next({
+          status:400,
+          message: `Table is not occupied`
+        })
+      }
+      return next();
+    }
+
 
 //CRUDL
 
@@ -147,10 +158,25 @@ async function update (req, res) {
   const data = await service.update(updatedTable)
   res.status(200).json({ data })
 }
-  
+
+async function destroy(req, res) {
+  console.log("destroy triggered")
+  const table_id = res.locals.table.table_id;
+  const data = await service.destroy(table_id);
+  res.sendStatus(204);
+}
+
+async function deleteSeatAssignment(req, res){
+  const {table_id, reservation_id} = res.locals.table;
+  const data = await service.deleteSeatAssignment(table_id);
+  res.status(200).json({data});
+}
+
 
 module.exports = {
     create: [hasOnlyValidProperties, hasRequiredProperties, validCapacity, validTableName, asyncErrorBoundary(create)],
     list: [asyncErrorBoundary(list)],
-    update: [hasOnlyValidProperties, tableExists, hasReservationId, reservationIdExists, validTableCapacity, tableIsUnoccupied, asyncErrorBoundary(update)]
+    update: [hasOnlyValidProperties, tableExists, hasReservationId, reservationIdExists, validTableCapacity, tableIsUnoccupied, asyncErrorBoundary(update)],
+    deleteSeatAssignment: [tableExists, tableIsOccupied, asyncErrorBoundary(deleteSeatAssignment)],
+    delete: [tableExists, asyncErrorBoundary(destroy)]
 }

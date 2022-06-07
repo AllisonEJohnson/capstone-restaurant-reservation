@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables } from "../utils/api";
+import { listReservations, listTables, finishTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
 import useQuery from '../utils/useQuery';
@@ -19,6 +19,7 @@ function Dashboard() {
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
+ 
 
   //If date is not given, should preform get request with today's date.
   let date = today();
@@ -26,8 +27,26 @@ function Dashboard() {
   if(query){
     date = query;
   }
- 
+  
+  //handler for finish button
 
+  async function finishHandler(table_id) {
+    const confirmationWindow = window.confirm("Is this table ready to seat new guests? This cannot be undone.")
+    if(confirmationWindow){
+    try{
+      console.log("finish")
+      const abortController = new AbortController();
+      await finishTable(table_id, abortController.signal);
+      loadReservations();
+      loadTables();
+    } catch(error){
+        setTablesError([error])
+    }
+ }
+}
+
+
+  //load reservations and tables
 
   useEffect(loadReservations, [date]);
 
@@ -71,7 +90,7 @@ function Dashboard() {
       <ErrorAlert error={reservationsError} />
       <ListReservations reservations={reservations} date = {date} />
       <br />
-      <ListTables tables={tables}/>
+      <ListTables tables={tables} finishHandler={finishHandler}/>
     </main>
   );
 }
