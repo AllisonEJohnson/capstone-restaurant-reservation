@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {useHistory, useParams} from 'react-router-dom';
-import { listTables, readReservation, updateTableForSeating } from "../utils/api";
+import { listTables, readReservation, updateTableForSeating, changeReservationStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import SeatReservationForm from "./SeatReservationForm";
 
@@ -31,11 +31,14 @@ function SeatReservation(){
             const tableData = JSON.parse(formData)
             const response = await updateTableForSeating(tableData.table_id, reservation_id)
             response.status = "Occupied";
+            await changeReservationStatus(reservation_id, "seated")
             history.push("/dashboard")
         } catch(error){
             throw error;
         }
      }
+
+
 
     // load tables
     useEffect(loadTables, []);

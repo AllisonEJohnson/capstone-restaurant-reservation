@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables, finishTable } from "../utils/api";
+import { listReservations, listTables, finishTable, changeReservationStatus } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
 import useQuery from '../utils/useQuery';
@@ -20,6 +20,7 @@ function Dashboard() {
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
  
+  const history = useHistory();
 
   //If date is not given, should preform get request with today's date.
   let date = today();
@@ -30,13 +31,13 @@ function Dashboard() {
   
   //handler for finish button
 
-  async function finishHandler(table_id) {
+  async function finishHandler({table_id, reservation_id}) {
     const confirmationWindow = window.confirm("Is this table ready to seat new guests? This cannot be undone.")
     if(confirmationWindow){
     try{
-      console.log("finish")
       const abortController = new AbortController();
       await finishTable(table_id, abortController.signal);
+      await changeReservationStatus(reservation_id, "finished")
       loadReservations();
       loadTables();
     } catch(error){
@@ -44,6 +45,7 @@ function Dashboard() {
     }
  }
 }
+
 
 
   //load reservations and tables
@@ -69,6 +71,8 @@ function Dashboard() {
       .catch(setTablesError);
     return () => abortController.abort();
   }
+
+
 
   return (
     <main>

@@ -5,6 +5,8 @@ function ListReservations({reservations, date}){
 
 
 const displayReservations = reservations.map((reservation, index) => {
+    
+    if(reservation.status !== "finished"){
 
     return(
             <tr key ={index}>
@@ -15,6 +17,7 @@ const displayReservations = reservations.map((reservation, index) => {
                 <td>{reservation.reservation_date}</td>
                 <td>{reservation.reservation_time}</td>
                 <td>{reservation.people}</td>
+                <td>{reservation.status}</td>
                 <td>{reservation.status !== "booked"? null : (
                 <>
                   <a
@@ -31,6 +34,7 @@ const displayReservations = reservations.map((reservation, index) => {
 
 
     )
+}
 })
     return(
         <div>
@@ -45,6 +49,7 @@ const displayReservations = reservations.map((reservation, index) => {
                         <th>Reservation Date</th>
                         <th>Reservation Time</th>
                         <th>People</th>
+                        <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>{displayReservations}</tbody>

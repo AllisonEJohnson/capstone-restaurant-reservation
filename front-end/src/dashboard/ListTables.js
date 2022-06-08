@@ -10,7 +10,7 @@ function ListTables({tables, finishHandler}){
                     <td>{table.reservation_id}</td>
                     <td><p data-table-id-status={table.table_id}>Occupied</p></td>
                     <td><button data-table-id-finish={table.table_id} className='button' type='' 
-                    onClick={() => finishHandler(table.table_id)}>Finish</button></td>
+                    onClick={() => finishHandler(table)}>Finish</button></td>
                 </tr>
             )
         } else {
