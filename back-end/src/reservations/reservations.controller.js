@@ -155,6 +155,20 @@ async function reservationExists (req, res, next) {
   })
 }
 
+async function validStatus(req, res, next) {
+  const { status } = req.body.data;
+  if (status) {
+    if (status !== "booked") {
+      return next({
+        status: 400,
+        message: `Cannot seat a reservation with a status of ${status}.`
+      })
+    } else if (status === "booked") {
+      return next();
+    }
+  } next();
+}
+
 
 
 
@@ -201,7 +215,7 @@ async function updateStatus(req, res){
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, asyncErrorBoundary(create)],
+  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, validStatus, asyncErrorBoundary(create)],
   read: [reservationExists, asyncErrorBoundary(read)],
   update: [reservationExists, asyncErrorBoundary(update)],
   updateStatus: [reservationExists, asyncErrorBoundary(updateStatus)]
