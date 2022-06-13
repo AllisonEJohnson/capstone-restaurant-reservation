@@ -83,7 +83,7 @@ function ReservationForm({formData, changeHandler, submitHandler}){
                     />
                 </label>
                 <br />
-                <button className="btn btn-outline-danger btn-sm mr-1" onClick={() => history.goBack()}>Cancel</button>
+                <button className="btn btn-outline-danger btn-sm mr-1" onClick={()=> history.push("/")}>Cancel</button>
                 <button type="submit" className="btn btn-outline-primary btn-sm" onClick={(event) => submitHandler(event)}>
                     Submit
                 </button>
@@ -93,3 +93,4 @@ function ReservationForm({formData, changeHandler, submitHandler}){
 }
 
 export default ReservationForm;
+

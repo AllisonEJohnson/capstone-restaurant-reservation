@@ -6,7 +6,7 @@ function ListReservations({reservations, date, cancelHandler}){
 
 const displayReservations = reservations.map((reservation, index) => {
     
-    if(reservation.status !== "finished"){
+    if(reservation.status !== "finished" || reservation.status !== "cancelled"){
 
     return(
             <tr key ={index} className="res-text table-row">
@@ -31,7 +31,7 @@ const displayReservations = reservations.map((reservation, index) => {
                   >
                     Edit
                   </a>
-                  <button data-table-id-finish={reservation.reservation_id} className='btn btn-danger' type='button' 
+                  <button data-reservation-id-cancel={reservation.reservation_id} className='btn btn-danger' type='button' 
                     onClick={() => cancelHandler(reservation)}>Cancel</button>
                 </> 
                 )}
