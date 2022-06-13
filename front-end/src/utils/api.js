@@ -128,12 +128,10 @@ export async function finishTable(table_id, signal) {
     body: JSON.stringify({ data: { table_id } }),
     signal,
   };
-  console.log("finishTable")
   return await fetchJson(url, options);
 };
 
 export async function changeReservationStatus(reservation_id, status, signal){
-  console.log("changeReservationStatus")
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
   const options = {
     method: "PUT",
@@ -145,11 +143,23 @@ export async function changeReservationStatus(reservation_id, status, signal){
 }
 
 export async function searchByMobileNumber(mobile_number, signal) {
-  console.log("mobile_number", mobile_number)
   const url = `${API_BASE_URL}/reservations/?mobile_number=${mobile_number}`
   return await fetchJson(url, { signal })
     .then(formatReservationDate)
     .then(formatReservationTime);
 }
+
+export async function editReservation(reservation_id, updatedRes, signal) {
+  const url = `${API_BASE_URL}/reservations/${reservation_id}/edit`;
+  updatedRes.people = Number(updatedRes.people);
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data: updatedRes }),
+    signal
+  }
+  return await fetchJson(url, options)
+};
+
 
 

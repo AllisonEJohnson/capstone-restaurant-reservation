@@ -239,6 +239,6 @@ module.exports = {
   list: [asyncErrorBoundary(list)],
   create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, statusNotBooked, asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
-  update: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(update)],
+  update: [asyncErrorBoundary(reservationExists),hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, statusNotBooked, asyncErrorBoundary(update)],
   updateStatus: [asyncErrorBoundary(reservationExists), statusIsNotFinished, validStatus, asyncErrorBoundary(updateStatus)]
 };

@@ -1,7 +1,7 @@
 
 import React from "react";
 
-function ListReservations({reservations, date}){
+function ListReservations({reservations, date, cancelHandler}){
 
 
 const displayReservations = reservations.map((reservation, index) => {
@@ -9,7 +9,7 @@ const displayReservations = reservations.map((reservation, index) => {
     if(reservation.status !== "finished"){
 
     return(
-            <tr key ={index}>
+            <tr key ={index} className="res-text table-row">
                 <td scope ="row">{reservation.reservation_id}</td>
                 <td>{reservation.first_name}</td>
                 <td>{reservation.last_name}</td>
@@ -26,6 +26,13 @@ const displayReservations = reservations.map((reservation, index) => {
                   >
                     Seat
                   </a>
+                  <a href={`/reservations/${reservation.reservation_id}/edit`}
+                    className="btn btn-outline-primary mx-1"
+                  >
+                    Edit
+                  </a>
+                  <button data-table-id-finish={reservation.reservation_id} className='btn btn-danger' type='button' 
+                    onClick={() => cancelHandler(reservation)}>Cancel</button>
                 </> 
                 )}
             </td>

@@ -20,6 +20,7 @@ function Dashboard() {
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
+  const [cancelError, setCancelError] = useState([])
  
 
 
@@ -72,6 +73,25 @@ function Dashboard() {
     
  }
 }
+
+
+  
+  async function cancelHandler({reservation_id}) {
+    const confirmationWindow = window.confirm("Do you want to cancel this reservation? This cannot be undone.")
+    if(confirmationWindow){
+    try{
+      console.log("cancelled")
+      const abortController = new AbortController();
+      await changeReservationStatus(reservation_id, "cancelled")
+    } catch(error){
+        setCancelError([error])
+    }
+
+    history.push("/")
+    
+ }
+}
+
   return (
     <main>
       <h1>Dashboard</h1>
@@ -90,7 +110,7 @@ function Dashboard() {
           </Link>
       </div>
       <ErrorAlert error={reservationsError} />
-      <ListReservations reservations={reservations} date = {date} />
+      <ListReservations reservations={reservations} date = {date} cancelHandler={cancelHandler} />
       <br />
       <ListTables tables={tables} finishHandler={finishHandler}/>
     </main>
