@@ -20,7 +20,7 @@ router.route("/:reservationId/status")
    .all(methodNotAllowed)
 
 router.route("/:reservationId/edit")
-   .put(controller.updateStatus)
+   .put(controller.update)
    .all(methodNotAllowed)
 
 

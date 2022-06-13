@@ -80,7 +80,6 @@ function Dashboard() {
     const confirmationWindow = window.confirm("Do you want to cancel this reservation? This cannot be undone.")
     if(confirmationWindow){
     try{
-      console.log("cancelled")
       const abortController = new AbortController();
       await changeReservationStatus(reservation_id, "cancelled")
     } catch(error){

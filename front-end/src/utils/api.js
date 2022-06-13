@@ -149,16 +149,20 @@ export async function searchByMobileNumber(mobile_number, signal) {
     .then(formatReservationTime);
 }
 
-export async function editReservation(reservation_id, updatedRes, signal) {
+export async function updateReservation(reservation_id, updatedRes, signal) {
+  console.log("updatedRes in edit", updatedRes)
   const url = `${API_BASE_URL}/reservations/${reservation_id}/edit`;
   updatedRes.people = Number(updatedRes.people);
+  console.log("updatedRes.people", updatedRes.people)
   const options = {
     method: "PUT",
     headers,
     body: JSON.stringify({ data: updatedRes }),
     signal
   }
-  return await fetchJson(url, options)
+  const data = await fetchJson(url, options)
+  console.log("data", data);
+  return data;
 };
 
 
