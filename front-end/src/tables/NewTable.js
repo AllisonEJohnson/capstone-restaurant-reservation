@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import TableForm from "./TableForm";
 import {createTable} from "../utils/api";
 import {useHistory} from 'react-router-dom';
@@ -32,7 +32,7 @@ function NewTable(){
     
       const submitHandler = async (event) => {
         event.preventDefault();
-        const abortController = new AbortController;
+        const abortController = new AbortController();
         console.log("formdata", formData)
         try {
         const response = await createTable(formData, abortController.signal)

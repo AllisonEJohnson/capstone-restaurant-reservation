@@ -1,5 +1,5 @@
 
-import React, {useState} from "react";
+import React from "react";
 
 function ListReservations({reservations, date}){
 
@@ -17,7 +17,7 @@ const displayReservations = reservations.map((reservation, index) => {
                 <td>{reservation.reservation_date}</td>
                 <td>{reservation.reservation_time}</td>
                 <td>{reservation.people}</td>
-                <td>{reservation.status}</td>
+                <td><p data-reservation-id-status={reservation.reservation_id}>{reservation.status}</p></td>
                 <td>{reservation.status !== "booked"? null : (
                 <>
                   <a

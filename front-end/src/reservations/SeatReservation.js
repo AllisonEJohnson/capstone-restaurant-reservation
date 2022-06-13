@@ -64,7 +64,7 @@ function SeatReservation(){
       return () => abortController.abort();
     }
 
-
+  
     if(tables) {
         return (
             <main>
@@ -88,5 +88,6 @@ function SeatReservation(){
 
 
 }
+
 
 export default SeatReservation;

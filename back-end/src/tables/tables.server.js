@@ -46,6 +46,13 @@ function readReservation(reservation_id){
         .update({"reservation_id": null})
  }
 
+ function updateStatus(reservationId, status) {
+    return knex("reservations")
+        .where({ reservation_id: reservationId })
+        .update({ status: status }, "*")
+        .then((updated) => updated[0]);
+}
+
 
 
 module.exports = {
@@ -55,5 +62,6 @@ module.exports = {
     read,
     readReservation,
     destroy,
-    deleteSeatAssignment
+    deleteSeatAssignment,
+    updateStatus
 };

@@ -15,12 +15,14 @@ import ListTables from "./ListTables";
  * @returns {JSX.Element}
  */
 function Dashboard() {
+  const history = useHistory();
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
  
-  const history = useHistory();
+
+
 
   //If date is not given, should preform get request with today's date.
   let date = today();
@@ -29,6 +31,29 @@ function Dashboard() {
     date = query;
   }
   
+
+
+  useEffect(loadDashboard, [date])
+
+
+
+  //load reservations and tables
+
+  function loadDashboard() {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    setTablesError(null);
+    listReservations( {date}, abortController.signal)
+      .then(setReservations)
+      .catch(setReservationsError);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setTablesError);
+    return () => abortController.abort();
+  }
+
+
+
   //handler for finish button
 
   async function finishHandler({table_id, reservation_id}) {
@@ -38,42 +63,15 @@ function Dashboard() {
       const abortController = new AbortController();
       await finishTable(table_id, abortController.signal);
       await changeReservationStatus(reservation_id, "finished")
-      loadReservations();
-      loadTables();
+      // console.log("finished")
     } catch(error){
         setTablesError([error])
     }
+
+    history.push("/")
+    
  }
 }
-
-
-
-  //load reservations and tables
-
-  useEffect(loadReservations, [date]);
-
-  function loadReservations() {
-    const abortController = new AbortController();
-    setReservationsError(null);
-    listReservations( {date}, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
-  }
-
-  useEffect(loadTables, []);
-
-  function loadTables() {
-    const abortController = new AbortController();
-    setTablesError(null);
-    listTables(abortController.signal)
-      .then(setTables)
-      .catch(setTablesError);
-    return () => abortController.abort();
-  }
-
-
-
   return (
     <main>
       <h1>Dashboard</h1>

@@ -76,9 +76,11 @@ describe("US-06 - Reservation status - E2E", () => {
         fullPage: true,
       });
 
-      await seatReservation(reservation.reservation_id, table.table_id);
+      const data = await seatReservation(reservation.reservation_id, table.table_id);
+      console.log("seatreservation", data)
 
       await page.reload({ waitUntil: "networkidle0" });
+
 
       await page.screenshot({
         path: ".screenshots/us-06-seated-after.png",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ReservationForm from "./ReservationForm";
 import {createReservation} from "../utils/api";
 import {useHistory} from 'react-router-dom';
@@ -30,7 +30,7 @@ function NewReservation(){
     
       const submitHandler = async (event) => {
         event.preventDefault();
-        const abortController = new AbortController;
+        const abortController = new AbortController();
         try {
         const response = await createReservation(formData, abortController.signal)
         history.push(`/dashboard/?date=${response.reservation_date.slice(0,10)}`)

@@ -136,6 +136,16 @@ function hasProperties(...properties) {
       return next();
     }
 
+    function statusNotSeated(req, res, next) {
+      const { status } = res.locals.reservation;
+      if(status === "seated") {
+        return next({
+          status: 400,
+          message: `reservation status is ${status}`
+        })
+      }
+      next()
+    }
 
 //CRUDL
 
@@ -168,15 +178,26 @@ async function destroy(req, res) {
 
 async function deleteSeatAssignment(req, res){
   const {table_id, reservation_id} = res.locals.table;
-  const data = await service.deleteSeatAssignment(table_id);
-  res.status(200).json({data});
+  const status = "finished";
+  await service.updateStatus(reservation_id, status);
+  await service.deleteSeatAssignment(table_id);
+  res.status(200).json({});
+}
+
+async function updateStatusToSeated(req, res, next) {
+  const updatedReservation = {
+    ...res.locals.reservation,
+    status: "seated"
+  }
+  await service.updateStatus(updatedReservation.reservation_id, updatedReservation.status)
+  next()
 }
 
 
 module.exports = {
     create: [hasOnlyValidProperties, hasRequiredProperties, validCapacity, validTableName, asyncErrorBoundary(create)],
     list: [asyncErrorBoundary(list)],
-    update: [hasOnlyValidProperties, tableExists, hasReservationId, reservationIdExists, validTableCapacity, tableIsUnoccupied, asyncErrorBoundary(update)],
+    update: [hasOnlyValidProperties, tableExists, hasReservationId, reservationIdExists, validTableCapacity, statusNotSeated, tableIsUnoccupied, updateStatusToSeated, asyncErrorBoundary(update)],
     deleteSeatAssignment: [tableExists, tableIsOccupied, asyncErrorBoundary(deleteSeatAssignment)],
     delete: [tableExists, asyncErrorBoundary(destroy)]
 }

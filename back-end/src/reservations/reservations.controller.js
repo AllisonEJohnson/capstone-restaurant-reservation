@@ -155,7 +155,7 @@ async function reservationExists (req, res, next) {
   })
 }
 
-async function validStatus(req, res, next) {
+function statusNotBooked(req, res, next) {
   const { status } = req.body.data;
   if (status) {
     if (status !== "booked") {
@@ -169,8 +169,27 @@ async function validStatus(req, res, next) {
   } next();
 }
 
+function statusIsNotFinished(req, res, next) {
+  const { status } = res.locals.reservation;
+  if(status != "finished") {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `Status cannot be updated if it is finished.`
+  })
+}
 
-
+function validStatus(req, res, next) {
+  const { status } = req.body.data;
+  if(status === "booked" || status === "seated" || status === "finished" || status === "cancelled") {
+    return next()
+  }
+  next({
+    status: 400,
+    message: `${status} is not a valid status.`
+  })
+}
 
 
 //CRUDL functions
@@ -215,8 +234,8 @@ async function updateStatus(req, res){
 
 module.exports = {
   list: [asyncErrorBoundary(list)],
-  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, validStatus, asyncErrorBoundary(create)],
-  read: [reservationExists, asyncErrorBoundary(read)],
-  update: [reservationExists, asyncErrorBoundary(update)],
-  updateStatus: [reservationExists, asyncErrorBoundary(updateStatus)]
+  create: [hasOnlyValidProperties, hasRequiredProperties, dateIsValid, timeIsValid, peopleIsNumber, notOnTuesday, notInPast, resDuringOpHrs, statusNotBooked, asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(read)],
+  update: [asyncErrorBoundary(reservationExists), asyncErrorBoundary(update)],
+  updateStatus: [asyncErrorBoundary(reservationExists), statusIsNotFinished, validStatus, asyncErrorBoundary(updateStatus)]
 };
