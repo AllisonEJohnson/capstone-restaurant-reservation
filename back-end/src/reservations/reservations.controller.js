@@ -194,11 +194,14 @@ function validStatus(req, res, next) {
 
 //CRUDL functions
 async function list(req, res) {
-  const {date} = req.query;
+  const {date, mobile_number} = req.query;
+  console.log("req.query", req.query);
   let data;
   if (date) {
     data = await service.listByDate(date);
 
+  } else if(mobile_number){
+    data = await service.search(mobile_number)
   } else {
     data = await service.list();
   }
