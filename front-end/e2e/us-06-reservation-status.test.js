@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { setDefaultOptions } = require('expect-puppeteer');
+const { setDefaultOptions } = require("expect-puppeteer");
 const fs = require("fs");
 const fsPromises = fs.promises;
 
@@ -76,11 +76,13 @@ describe("US-06 - Reservation status - E2E", () => {
         fullPage: true,
       });
 
-      const data = await seatReservation(reservation.reservation_id, table.table_id);
-      console.log("seatreservation", data)
+      const data = await seatReservation(
+        reservation.reservation_id,
+        table.table_id
+      );
+      console.log("seatreservation", data);
 
       await page.reload({ waitUntil: "networkidle0" });
-
 
       await page.screenshot({
         path: ".screenshots/us-06-seated-after.png",

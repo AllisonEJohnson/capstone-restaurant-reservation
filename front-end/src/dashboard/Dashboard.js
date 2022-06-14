@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { listReservations, listTables, finishTable, changeReservationStatus } from "../utils/api";
+import {
+  listReservations,
+  listTables,
+  finishTable,
+  changeReservationStatus,
+} from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import ListReservations from "./ListReservations";
-import useQuery from '../utils/useQuery';
+import useQuery from "../utils/useQuery";
 import { today } from "../utils/date-time";
 import { previous, next } from "../utils/date-time";
 import { Link, useHistory } from "react-router-dom";
@@ -20,23 +25,16 @@ function Dashboard() {
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
-  const [cancelError, setCancelError] = useState([])
- 
-
-
+  const [cancelError, setCancelError] = useState([]);
 
   //If date is not given, should preform get request with today's date.
   let date = today();
-  const query = useQuery().get('date');
-  if(query){
+  const query = useQuery().get("date");
+  if (query) {
     date = query;
   }
-  
 
-
-  useEffect(loadDashboard, [date])
-
-
+  useEffect(loadDashboard, [date]);
 
   //load reservations and tables
 
@@ -44,51 +42,47 @@ function Dashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
     setTablesError(null);
-    listReservations( {date}, abortController.signal)
+    listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-    listTables(abortController.signal)
-      .then(setTables)
-      .catch(setTablesError);
+    listTables(abortController.signal).then(setTables).catch(setTablesError);
     return () => abortController.abort();
   }
 
-
-
   //handler for finish button
 
-  async function finishHandler({table_id, reservation_id}) {
-    const confirmationWindow = window.confirm("Is this table ready to seat new guests? This cannot be undone.")
-    if(confirmationWindow){
-    try{
-      const abortController = new AbortController();
-      await finishTable(table_id, abortController.signal);
-      await changeReservationStatus(reservation_id, "finished")
-    } catch(error){
-        setTablesError([error])
+  async function finishHandler({ table_id, reservation_id }) {
+    const confirmationWindow = window.confirm(
+      "Is this table ready to seat new guests? This cannot be undone."
+    );
+    if (confirmationWindow) {
+      try {
+        const abortController = new AbortController();
+        await finishTable(table_id, abortController.signal);
+        await changeReservationStatus(reservation_id, "finished");
+      } catch (error) {
+        setTablesError([error]);
+      }
+
+      history.push("/");
     }
+  }
 
-    history.push("/")
-    
- }
-}
+  async function cancelHandler({ reservation_id }) {
+    const confirmationWindow = window.confirm(
+      "Do you want to cancel this reservation? This cannot be undone."
+    );
+    if (confirmationWindow) {
+      try {
+        const abortController = new AbortController();
+        await changeReservationStatus(reservation_id, "cancelled");
+      } catch (error) {
+        setCancelError([error]);
+      }
 
-
-  
-  async function cancelHandler({reservation_id}) {
-    const confirmationWindow = window.confirm("Do you want to cancel this reservation? This cannot be undone.")
-    if(confirmationWindow){
-    try{
-      const abortController = new AbortController();
-      await changeReservationStatus(reservation_id, "cancelled")
-    } catch(error){
-        setCancelError([error])
+      history.push("/");
     }
-
-    history.push("/")
-    
- }
-}
+  }
 
   return (
     <main>
@@ -96,21 +90,28 @@ function Dashboard() {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date</h4>
       </div>
-      <div classname ="container">
-          <Link to={`/dashboard/?date=${previous(date)}`} className="btn btn-dark">
-            Previous
-          </Link>
-          <Link to={`/dashboard`} className="btn btn-light">
-            Today
-          </Link>
-          <Link to={`/dashboard/?date=${next(date)}`} className="btn btn-dark">
-            Next
-          </Link>
+      <div classname="container">
+        <Link
+          to={`/dashboard/?date=${previous(date)}`}
+          className="btn btn-dark"
+        >
+          Previous
+        </Link>
+        <Link to={`/dashboard`} className="btn btn-light">
+          Today
+        </Link>
+        <Link to={`/dashboard/?date=${next(date)}`} className="btn btn-dark">
+          Next
+        </Link>
       </div>
       <ErrorAlert error={reservationsError} />
-      <ListReservations reservations={reservations} date = {date} cancelHandler={cancelHandler} />
+      <ListReservations
+        reservations={reservations}
+        date={date}
+        cancelHandler={cancelHandler}
+      />
       <br />
-      <ListTables tables={tables} finishHandler={finishHandler}/>
+      <ListTables tables={tables} finishHandler={finishHandler} />
     </main>
   );
 }
