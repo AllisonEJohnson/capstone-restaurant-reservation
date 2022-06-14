@@ -13,7 +13,7 @@ function ListTables({ tables, finishHandler }) {
           <td>
             <button
               data-table-id-finish={table.table_id}
-              className="button"
+              className="btn btn-outline-primary"
               type=""
               onClick={() => finishHandler(table)}
             >
@@ -34,6 +34,7 @@ function ListTables({ tables, finishHandler }) {
               Free
             </p>
           </td>
+          <td></td>
         </tr>
       );
     }
@@ -42,14 +43,15 @@ function ListTables({ tables, finishHandler }) {
   return (
     <div>
       <div>
-        <table>
-          <thead>
+        <table class="table table-striped table-bordered">
+          <thead class="thread-dark">
             <tr>
               <th>Table ID</th>
               <th>Table Name</th>
               <th>Capacity</th>
               <th>Reservation ID</th>
               <th>Occupied</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>{displayTables}</tbody>

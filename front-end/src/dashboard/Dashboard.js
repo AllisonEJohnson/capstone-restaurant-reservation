@@ -104,6 +104,7 @@ function Dashboard() {
           Next
         </Link>
       </div>
+      <br />
       <ErrorAlert error={reservationsError} />
       <ListReservations
         reservations={reservations}

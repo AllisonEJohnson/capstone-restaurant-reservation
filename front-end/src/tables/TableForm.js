@@ -14,7 +14,7 @@ function TableForm({
       <form>
         <label htmlFor="table_name">
           Table Name:
-          <input
+          <input class="form-control"
             type="text"
             name="table_name"
             id="table_name"
@@ -26,7 +26,7 @@ function TableForm({
         <br />
         <label htmlFor="capacity">
           Capacity Size:
-          <input
+          <input class="form-control"
             type="number"
             name="capacity"
             id="capacity"
