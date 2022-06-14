@@ -43,8 +43,8 @@ function ListTables({ tables, finishHandler }) {
   return (
     <div>
       <div>
-        <table class="table table-striped table-bordered">
-          <thead class="thread-dark">
+        <table className="table table-striped table-bordered">
+          <thead className="thread-dark">
             <tr>
               <th>Table ID</th>
               <th>Table Name</th>

@@ -9,7 +9,7 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
       <form>
         <label htmlFor="first_name">
           First Name:
-          <input class="form-control"
+          <input className="form-control"
             type="text"
             name="first_name"
             id="first_name"
@@ -21,7 +21,7 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
         <br />
         <label htmlFor="last_name">
           Last Name:
-          <input class="form-control"
+          <input className="form-control"
             type="text"
             name="last_name"
             id="last_name"
@@ -33,7 +33,7 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
         <br />
         <label htmlFor="mobile_number">
           Mobile Number:
-          <input class="form-control"
+          <input className="form-control"
             type="tel"
             name="mobile_number"
             id="mobile_number"
@@ -45,7 +45,7 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
         <br />
         <label htmlFor="reservation_date">
           Reservation Date:
-          <input class="form-control"
+          <input className="form-control"
             type="date"
             placeholder="YYYY-MM-DD"
             pattern="\d{4}-\d{2}-\d{2}"
@@ -59,7 +59,7 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
         <br />
         <label htmlFor="reservation_time">
           Reservation Time:
-          <input class="form-control"
+          <input className="form-control"
             type="time"
             placeholder="HH:MM"
             pattern="[0-9]{2}:[0-9]{2}"
@@ -73,7 +73,7 @@ function ReservationForm({ formData, changeHandler, submitHandler }) {
         <br />
         <label htmlFor="people">
           Party Size:
-          <input class="form-control"
+          <input className="form-control"
             type="number"
             name="people"
             id="people"

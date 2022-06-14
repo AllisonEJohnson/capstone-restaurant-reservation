@@ -57,8 +57,7 @@ function Dashboard() {
     );
     if (confirmationWindow) {
       try {
-        const abortController = new AbortController();
-        await finishTable(table_id, abortController.signal);
+        await finishTable(table_id);
         await changeReservationStatus(reservation_id, "finished");
       } catch (error) {
         setTablesError([error]);
@@ -90,7 +89,7 @@ function Dashboard() {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date</h4>
       </div>
-      <div classname="container">
+      <div className="container">
         <Link
           to={`/dashboard/?date=${previous(date)}`}
           className="btn btn-dark"
@@ -106,6 +105,8 @@ function Dashboard() {
       </div>
       <br />
       <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={tablesError} />
+      <ErrorAlert error={cancelError} />
       <ListReservations
         reservations={reservations}
         date={date}

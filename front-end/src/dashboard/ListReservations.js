@@ -53,8 +53,8 @@ function ListReservations({ reservations, date, cancelHandler }) {
   return (
     <div>
       <div>
-        <table class="table table-striped table-bordered">
-          <thead class="thread-dark">
+        <table className="table table-striped table-bordered">
+          <thead className="thread-dark">
             <tr>
               <th>Reservation ID</th>
               <th>First Name</th>

@@ -111,7 +111,8 @@ export async function updateTableForSeating(table_id, reservation_id, signal) {
     body: JSON.stringify({ data: { reservation_id } }),
     signal,
   };
-  return await fetchJson(url, options);
+  const data =  await fetchJson(url, options);
+  return data;
 }
 
 export async function finishTable(table_id, signal) {
