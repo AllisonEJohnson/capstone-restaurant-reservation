@@ -19,12 +19,12 @@ function EditReservation() {
   const reservation_id = params.reservation_id;
   const history = useHistory();
 
-  const [reservationError, setReservationError] = useState([]);
+  const [reservationError, setReservationError] = useState(null);
   const [formData, setFormData] = useState({ ...initialFormState });
-  const [errorAlert, setErrorAlert] = useState([]);
+  const [errorAlert, setErrorAlert] = useState(null);
 
   //load reservation
-  useEffect(loadReservation, []);
+  useEffect(loadReservation, [reservation_id]);
 
   function loadReservation() {
     const abortController = new AbortController();
@@ -79,7 +79,8 @@ function EditReservation() {
         <h1>Edit Reservation</h1>
       </div>
       <div>
-        {/* {errorAlert.length>0 && <ErrorAlert error={errorAlert} /> } */}
+        <ErrorAlert error={errorAlert} /> 
+        <ErrorAlert error={reservationError} />
       </div>
       <div>
         <ReservationForm

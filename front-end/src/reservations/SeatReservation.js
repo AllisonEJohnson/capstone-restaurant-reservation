@@ -52,7 +52,7 @@ function SeatReservation() {
   }
 
   //load reservation
-  useEffect(loadReservation, []);
+  useEffect(loadReservation, [reservation_id]);
 
   function loadReservation() {
     const abortController = new AbortController();
@@ -72,6 +72,7 @@ function SeatReservation() {
         </h3>
         <div>
           <ErrorAlert error={tablesError} />
+          <ErrorAlert error={reservationError} />
           <SeatReservationForm
             tables={tables}
             submitHandler={submitHandler}

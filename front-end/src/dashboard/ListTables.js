@@ -3,7 +3,7 @@ function ListTables({ tables, finishHandler }) {
     if (table.occupied || table.reservation_id) {
       return (
         <tr key={index}>
-          <td scope="row">{table.table_id}</td>
+          <td>{table.table_id}</td>
           <td>{table.table_name}</td>
           <td>{table.capacity}</td>
           <td>{table.reservation_id}</td>
@@ -25,7 +25,7 @@ function ListTables({ tables, finishHandler }) {
     } else {
       return (
         <tr key={index}>
-          <td scope="row">{table.table_id}</td>
+          <td>{table.table_id}</td>
           <td>{table.table_name}</td>
           <td>{table.capacity}</td>
           <td>{table.reservation_id}</td>

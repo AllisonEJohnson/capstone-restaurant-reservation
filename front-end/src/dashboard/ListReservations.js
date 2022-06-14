@@ -8,7 +8,7 @@ function ListReservations({ reservations, date, cancelHandler }) {
     ) {
       return (
         <tr key={index} className="res-text table-row">
-          <td scope="row">{reservation.reservation_id}</td>
+          <td>{reservation.reservation_id}</td>
           <td>{reservation.first_name}</td>
           <td>{reservation.last_name}</td>
           <td>{reservation.mobile_number}</td>
@@ -48,8 +48,10 @@ function ListReservations({ reservations, date, cancelHandler }) {
           </td>
         </tr>
       );
-    }
+    } 
+    return null;
   });
+
   return (
     <div>
       <div>

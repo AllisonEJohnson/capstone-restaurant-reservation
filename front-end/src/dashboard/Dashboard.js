@@ -25,7 +25,7 @@ function Dashboard() {
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([]);
   const [tablesError, setTablesError] = useState([]);
-  const [cancelError, setCancelError] = useState([]);
+  const [cancelError, setCancelError] = useState(null);
 
   //If date is not given, should preform get request with today's date.
   let date = today();
@@ -73,9 +73,9 @@ function Dashboard() {
     );
     if (confirmationWindow) {
       try {
-        const abortController = new AbortController();
         await changeReservationStatus(reservation_id, "cancelled");
       } catch (error) {
+
         setCancelError([error]);
       }
 

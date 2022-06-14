@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
-import { useHistory } from "react-router-dom";
 import { searchByMobileNumber } from "../utils/api";
 import SearchForm from "./SearchForm";
 import ListReservations from "../dashboard/ListReservations";
@@ -16,7 +15,7 @@ function Search() {
   const [searchError, setSearchError] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
-  const history = useHistory();
+
 
   //change handlers
 

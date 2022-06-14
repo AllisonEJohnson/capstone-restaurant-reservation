@@ -33,7 +33,7 @@ function NewTable() {
     event.preventDefault();
     const abortController = new AbortController();
     try {
-      const response = await createTable(formData, abortController.signal);
+      await createTable(formData, abortController.signal);
       history.push(`/dashboard`);
     } catch (error) {
       setErrorAlert(error);
