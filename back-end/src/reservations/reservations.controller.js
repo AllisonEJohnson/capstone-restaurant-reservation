@@ -104,7 +104,6 @@ function peopleIsNumber (req, res, next) {
 
 function notInPast (req, res, next) {
   const { reservation_date, reservation_time } = res.locals;
-  console.log(reservation_date, reservation_time);
   let now = Date.now()
   let bookedTime = Date.parse(`${reservation_date} ${reservation_time} EST`)
   if (bookedTime > now) {
@@ -195,7 +194,6 @@ function validStatus(req, res, next) {
 //CRUDL functions
 async function list(req, res) {
   const {date, mobile_number} = req.query;
-  console.log("req.query", req.query);
   let data;
   if (date) {
     data = await service.listByDate(date);

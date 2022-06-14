@@ -64,7 +64,6 @@ function Dashboard() {
       const abortController = new AbortController();
       await finishTable(table_id, abortController.signal);
       await changeReservationStatus(reservation_id, "finished")
-      // console.log("finished")
     } catch(error){
         setTablesError([error])
     }

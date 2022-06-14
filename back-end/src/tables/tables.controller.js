@@ -170,7 +170,6 @@ async function update (req, res) {
 }
 
 async function destroy(req, res) {
-  console.log("destroy triggered")
   const table_id = res.locals.table.table_id;
   const data = await service.destroy(table_id);
   res.sendStatus(204);

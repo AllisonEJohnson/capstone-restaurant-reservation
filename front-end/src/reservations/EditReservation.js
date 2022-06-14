@@ -56,13 +56,11 @@ function EditReservation(){
     };   
         
     const submitHandler = async (event) => {
-        console.log("beginning of submit handler formData", formData)
         event.preventDefault();
         setErrorAlert(null)
         const abortController = new AbortController();
         try {
         const response = await updateReservation(reservation_id, formData, abortController.signal)
-        console.log("response", response)
         history.push(`/dashboard/?date=${response.reservation_date.slice(0,10)}`)
         } catch(error){
             setErrorAlert(error);

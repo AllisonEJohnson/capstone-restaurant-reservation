@@ -75,7 +75,6 @@ export async function readReservation(reservation_id, signal) {
 
 
 export async function createReservation(reservation, signal) {
-  console.log("create reservation data")
   const url = `${API_BASE_URL}/reservations`;
   reservation.people = Number(reservation.people);
   const options = {
@@ -85,7 +84,6 @@ export async function createReservation(reservation, signal) {
     signal
   };
   let data = await fetchJson(url, options);
-  console.log("data from create reservation", data)
   return data;
 
 };
@@ -110,7 +108,6 @@ export async function listTables(signal) {
 
 export async function updateTableForSeating(table_id, reservation_id, signal) {
   const url = `${API_BASE_URL}/tables/${table_id}/seat`;
-  console.log("url in api", url)
   const options = {
     method: "PUT",
     headers,
@@ -150,10 +147,8 @@ export async function searchByMobileNumber(mobile_number, signal) {
 }
 
 export async function updateReservation(reservation_id, updatedRes, signal) {
-  console.log("updatedRes in edit", updatedRes)
   const url = `${API_BASE_URL}/reservations/${reservation_id}/edit`;
   updatedRes.people = Number(updatedRes.people);
-  console.log("updatedRes.people", updatedRes.people)
   const options = {
     method: "PUT",
     headers,
@@ -161,7 +156,6 @@ export async function updateReservation(reservation_id, updatedRes, signal) {
     signal
   }
   const data = await fetchJson(url, options)
-  console.log("data", data);
   return data;
 };
 
