@@ -1,5 +1,9 @@
 # Capstone: Restaurant Reservation System
 
+## Background
+
+This is the final capstone project for Thinkful. I followed the instructions below to create the web application. Here is the link to the deployed website: https://capstone-restaurant-reservation-front-eugngquea-allisonejohnson.vercel.app/. 
+
 > You have been hired as a full stack developer at _Periodic Tables_, a startup that is creating a reservation system for fine dining restaurants.
 > The software is used only by restaurant personnel when a customer calls to request a reservation.
 > At this point, the customers will not access the system online.
